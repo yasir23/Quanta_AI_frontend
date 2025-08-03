@@ -14,7 +14,7 @@ export function Footer() {
       { title: 'Pricing', href: '/pricing' },
       { title: 'Dashboard', href: '/dashboard' },
       { title: 'Features', href: '/#features' },
-      { title: 'API Docs', href: '#' },
+      { title: 'API Docs', href: 'http://localhost:2024/docs' },
     ],
     'Company': [
       { title: 'About', href: '#' },
