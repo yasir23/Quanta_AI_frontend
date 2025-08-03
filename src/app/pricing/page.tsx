@@ -16,21 +16,20 @@ const plans = [
     description: 'For individuals starting to explore trends.',
     monthlyPrice: 0,
     yearlyPrice: 0,
-    features: ['5 trends per month', 'Basic data sources', 'Community support'],
+    features: ['1 dashboard', '1 AI report/month', 'Community support'],
     cta: 'Start for Free',
     href: '/sign-in',
   },
   {
     name: 'Pro',
     description: 'For professionals who need to stay ahead.',
-    monthlyPrice: 49,
-    yearlyPrice: 490,
+    monthlyPrice: 39,
+    yearlyPrice: 390,
     features: [
-      'Unlimited trends',
-      'All data sources',
-      '50 AI explanations/month',
-      'Priority email support',
-      'API access',
+      'Unlimited dashboards',
+      '10 reports/mo',
+      'Export data',
+      'Email support',
     ],
     cta: 'Start Free Trial',
     href: '/sign-in',
@@ -43,10 +42,10 @@ const plans = [
     yearlyPrice: null,
     features: [
       'Everything in Pro',
-      'Team accounts',
-      'Dedicated account manager',
-      'Custom data integrations',
-      'SLA & premium support',
+      'Dedicated infra',
+      'Custom prompts',
+      'Private model fine-tuning',
+      'Analyst onboarding',
     ],
     cta: 'Contact Sales',
     href: '#',
@@ -98,7 +97,7 @@ export default function PricingPage() {
                     {plan.monthlyPrice !== null ? (
                       <>
                         <span className="text-4xl font-bold">
-                          ${isYearly ? plan.yearlyPrice / 12 : plan.monthlyPrice}
+                          ${isYearly && plan.yearlyPrice > 0 ? plan.yearlyPrice / 12 : plan.monthlyPrice}
                         </span>
                         <span className="text-muted-foreground">/month</span>
                         {isYearly && plan.yearlyPrice > 0 && <p className="text-sm text-muted-foreground">Billed as ${plan.yearlyPrice}/year</p>}

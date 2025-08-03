@@ -14,10 +14,11 @@ export function Footer() {
       { title: 'Pricing', href: '/pricing' },
       { title: 'Dashboard', href: '/dashboard' },
       { title: 'Features', href: '/#features' },
+      { title: 'API Docs', href: '#' },
     ],
     'Company': [
-      { title: 'About Us', href: '#' },
-      { title: 'Careers', href: '#' },
+      { title: 'About', href: '#' },
+      { title: 'Blog', href: '#' },
       { title: 'Contact', href: '#' },
     ],
     'Legal': [
