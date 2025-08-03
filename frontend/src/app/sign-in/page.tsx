@@ -26,15 +26,6 @@ export default function SignInPage() {
     }
   }, [user, router]);
 
-  const handleSignIn = async () => {
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      console.error("Failed to sign in with Google", error);
-      // You can also show an error message to the user
-    }
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary/50 p-4 fade-in">
       <div className="w-full max-w-md">
@@ -47,7 +38,7 @@ export default function SignInPage() {
             <CardDescription>Sign in to see what the world is thinking.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full h-12 text-base" onClick={handleSignIn}>
+            <Button variant="outline" className="w-full h-12 text-base" onClick={signInWithGoogle}>
               <GoogleIcon className="mr-3 h-5 w-5" />
               Sign in with Google
             </Button>
