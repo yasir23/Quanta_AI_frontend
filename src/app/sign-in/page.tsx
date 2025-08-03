@@ -1,7 +1,10 @@
+'use client';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from 'next/navigation';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg role="img" viewBox="0 0 24 24" {...props}>
@@ -13,6 +16,19 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function SignInPage() {
+  const { signInWithGoogle } = useAuth();
+  const router = useRouter();
+
+  const handleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      router.push('/dashboard');
+    } catch (error) {
+      console.error("Failed to sign in with Google", error);
+      // You can also show an error message to the user
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary/50 p-4 fade-in">
       <div className="w-full max-w-md">
@@ -25,7 +41,7 @@ export default function SignInPage() {
             <CardDescription>Sign in to see what the world is thinking.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full h-12 text-base">
+            <Button variant="outline" className="w-full h-12 text-base" onClick={handleSignIn}>
               <GoogleIcon className="mr-3 h-5 w-5" />
               Sign in with Google
             </Button>

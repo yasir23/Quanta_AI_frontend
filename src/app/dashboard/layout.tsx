@@ -29,15 +29,88 @@ import {
   Settings,
   LayoutDashboard,
   LogOut,
+  User,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { sidebarLinks, userMenuLinks } from '@/lib/constants';
+import { AuthProvider, useAuth } from '@/lib/auth';
+import { DollarSignIcon } from '@/components/dollar-sign-icon';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+
+function UserMenu() {
+    const { user, signOut } = useAuth();
+
+    if (!user) {
+        return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="overflow-hidden rounded-full"
+                >
+                  <Avatar>
+                    <AvatarFallback>Q</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                 <DropdownMenuItem asChild>
+                    <Link href="/sign-in">Login</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+        )
+    }
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    variant="outline"
+                    size="icon"
+                    className="overflow-hidden rounded-full"
+                >
+                    <Avatar>
+                        <AvatarImage src={user.photoURL || ''} alt={user.displayName || ''} />
+                        <AvatarFallback>{user.displayName?.charAt(0) || 'Q'}</AvatarFallback>
+                    </Avatar>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                    <Link href="/settings" className="flex items-center gap-2">
+                        <User className="h-4 w-4"/>
+                        Profile
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/pricing" className="flex items-center gap-2">
+                        <DollarSignIcon className="h-4 w-4"/>
+                        Billing
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/settings" className="flex items-center gap-2">
+                        <Settings className="h-4 w-4"/>
+                        Settings
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut} asChild>
+                    <Link href="/" className="flex items-center gap-2">
+                        <LogOut className="h-4 w-4" />
+                        Logout
+                    </Link>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
+
+function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-background sm:flex">
@@ -106,39 +179,7 @@ export default function DashboardLayout({
             </SheetContent>
           </Sheet>
           <div className="ml-auto flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="overflow-hidden rounded-full"
-                >
-                  <Avatar>
-                    <AvatarImage src="https://placehold.co/32x32" alt="@user" />
-                    <AvatarFallback>Q</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {userMenuLinks.map(link => (
-                <DropdownMenuItem key={link.href} asChild>
-                    <Link href={link.href} className="flex items-center gap-2">
-                        <link.icon className="h-4 w-4"/>
-                        {link.label}
-                    </Link>
-                </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                    <Link href="/" className="flex items-center gap-2">
-                        <LogOut className="h-4 w-4" />
-                        Logout
-                    </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserMenu />
           </div>
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 fade-in">
@@ -147,4 +188,17 @@ export default function DashboardLayout({
       </div>
     </div>
   );
+}
+
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+    return (
+        <AuthProvider>
+            <DashboardLayoutContent>{children}</DashboardLayoutContent>
+        </AuthProvider>
+    )
 }
