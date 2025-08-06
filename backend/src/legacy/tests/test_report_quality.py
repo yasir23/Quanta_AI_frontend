@@ -43,7 +43,7 @@ def get_evaluation_llm(eval_model=None):
     # Use provided model, then environment variable, then default
     model_to_use = eval_model or os.environ.get("EVAL_MODEL", "anthropic:claude-3-7-sonnet-latest")
     
-    criteria_eval_llm = init_chat_model(model_to_use)
+    criteria_eval_llm = init_chat_model(model=model_to_use)
     return criteria_eval_llm.with_structured_output(CriteriaGrade)
 
 RESPONSE_CRITERIA_SYSTEM_PROMPT = """

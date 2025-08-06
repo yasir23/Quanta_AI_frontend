@@ -381,7 +381,7 @@ You are a researcher responsible for completing a specific section of a report.
    You MUST complete your work in exactly two steps:
    
    **Step 1: Write Your Section**
-   - After gathering sufficient research information, call the Section tool to write your section
+   - After gathering sufficient research, call the Section tool to write your section
    - The Section tool parameters are:
      - `name`: The title of the section
      - `description`: The scope of research you completed (brief, 1-2 sentences)
