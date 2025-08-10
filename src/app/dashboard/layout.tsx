@@ -32,13 +32,14 @@ import {
   User,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import NotificationCenter from '@/components/dashboard/notification-center';
 import { sidebarLinks, userMenuLinks } from '@/lib/constants';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import { DollarSignIcon } from '@/components/dollar-sign-icon';
 
 
 function UserMenu() {
-    const { user, signOut } = useAuth();
+    const { user, profile, signOut } = useAuth();
 
     if (!user) {
         return (
@@ -63,6 +64,9 @@ function UserMenu() {
         )
     }
 
+    const displayName = profile?.name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
+    const avatarUrl = profile?.avatar_url || user.user_metadata?.avatar_url;
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -72,8 +76,8 @@ function UserMenu() {
                     className="overflow-hidden rounded-full"
                 >
                     <Avatar>
-                        <AvatarImage src={user.photoURL || ''} alt={user.displayName || ''} />
-                        <AvatarFallback>{user.displayName?.charAt(0) || 'Q'}</AvatarFallback>
+                        <AvatarImage src={avatarUrl || ''} alt={displayName} />
+                        <AvatarFallback>{displayName.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
@@ -99,11 +103,9 @@ function UserMenu() {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} asChild>
-                    <Link href="/" className="flex items-center gap-2">
-                        <LogOut className="h-4 w-4" />
-                        Logout
-                    </Link>
+                <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer">
+                    <LogOut className="h-4 w-4" />
+                    Logout
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -179,6 +181,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
             </SheetContent>
           </Sheet>
           <div className="ml-auto flex items-center gap-2">
+            <NotificationCenter />
             <UserMenu />
           </div>
         </header>
@@ -202,3 +205,6 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
+
+
