@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Sparkles, BookOpen, TrendingUp, Code } from 'lucide-react';
 import { ResearchClient } from '@/ai/research-client';
 import { ResearchResponse } from '@/lib/api';
+import { checkCanMakeRequest, trackRequest } from '@/lib/usage-tracking';
 
 const researchFormSchema = z.object({
   query: z.string().min(10, 'Research query must be at least 10 characters long'),
@@ -252,3 +253,4 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     </Card>
   );
 }
+
