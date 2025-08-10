@@ -24,8 +24,11 @@ export default function ExplainTrendModal({
   trendName,
 }: ExplainTrendModalProps) {
   const [explanation, setExplanation] = useState('');
+  const [sources, setSources] = useState<Array<{ title: string; url: string; snippet: string }>>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState<'pending' | 'in_progress' | 'completed' | 'failed'>('pending');
 
   useEffect(() => {
     if (isOpen && trendName) {
@@ -33,12 +36,28 @@ export default function ExplainTrendModal({
         setIsLoading(true);
         setError(null);
         setExplanation('');
+        setSources([]);
+        setProgress(0);
+        setStatus('pending');
+        
         try {
-          const result = await explainTrend({ trend: trendName });
+          const result = await ResearchClient.explainTrend(
+            { trend: trendName },
+            (newStatus, newProgress) => {
+              setStatus(newStatus);
+              if (newProgress !== undefined) {
+                setProgress(newProgress);
+              }
+            }
+          );
+          
           setExplanation(result.explanation);
-        } catch (e) {
-          setError('Failed to generate explanation. Please try again.');
-          console.error(e);
+          setSources(result.sources || []);
+          setStatus('completed');
+        } catch (e: any) {
+          setError(e.message || 'Failed to generate explanation. Please try again.');
+          setStatus('failed');
+          console.error('Research error:', e);
         } finally {
           setIsLoading(false);
         }
@@ -78,4 +97,5 @@ export default function ExplainTrendModal({
     </Dialog>
   );
 }
+
 
