@@ -181,6 +181,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
             </SheetContent>
           </Sheet>
           <div className="ml-auto flex items-center gap-2">
+            <NotificationCenter />
             <UserMenu />
           </div>
         </header>
@@ -204,5 +205,6 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
 
 
