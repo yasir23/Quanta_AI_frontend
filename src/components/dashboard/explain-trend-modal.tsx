@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -8,8 +8,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { LoaderCircle, Sparkles } from 'lucide-react';
-import { explainTrend } from '@/ai/flows/explain-trend';
+import { LoaderCircle, Sparkles, ExternalLink } from 'lucide-react';
+import { ResearchClient } from '@/ai/research-client';
 import { Button } from '../ui/button';
 
 interface ExplainTrendModalProps {
@@ -78,3 +78,4 @@ export default function ExplainTrendModal({
     </Dialog>
   );
 }
+
