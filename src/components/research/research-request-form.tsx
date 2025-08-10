@@ -16,6 +16,9 @@ import { Search, Sparkles, BookOpen, TrendingUp, Code } from 'lucide-react';
 import { ResearchClient } from '@/ai/research-client';
 import { ResearchResponse } from '@/lib/api';
 import { checkCanMakeRequest, trackRequest } from '@/lib/usage-tracking';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { ErrorDisplay } from '@/components/ui/error-boundary';
+import { toastVariants } from '@/components/ui/toast-variants';
 
 const researchFormSchema = z.object({
   query: z.string().min(10, 'Research query must be at least 10 characters long'),
@@ -262,5 +265,6 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     </Card>
   );
 }
+
 
 
