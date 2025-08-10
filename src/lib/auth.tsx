@@ -191,6 +191,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateProfile = async (updates: Partial<UserProfile>) => {
     if (!user) throw new Error('No user logged in');
 
+    const supabase = getSupabase();
+    if (!supabase) {
+      throw new Error('Supabase client not available. Cannot update profile.');
+    }
+
     try {
       const { error } = await supabase
         .from('user_profiles')
@@ -233,6 +238,7 @@ export function useAuth() {
   }
   return context;
 }
+
 
 
 
