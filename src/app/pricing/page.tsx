@@ -4,53 +4,15 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Check, Star } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Check, Star, Zap, Shield, Rocket } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-
-const plans = [
-  {
-    name: 'Free',
-    description: 'For individuals starting to explore trends.',
-    monthlyPrice: 0,
-    yearlyPrice: 0,
-    features: ['1 dashboard', '1 AI report/month', 'Community support'],
-    cta: 'Start for Free',
-    href: '/sign-in',
-  },
-  {
-    name: 'Pro',
-    description: 'For professionals who need to stay ahead.',
-    monthlyPrice: 39,
-    yearlyPrice: 390,
-    features: [
-      'Unlimited dashboards',
-      '10 reports/mo',
-      'Export data',
-      'Email support',
-    ],
-    cta: 'Start Free Trial',
-    href: '/sign-in',
-    isPopular: true,
-  },
-  {
-    name: 'Enterprise',
-    description: 'For organizations that need advanced insights.',
-    monthlyPrice: null,
-    yearlyPrice: null,
-    features: [
-      'Everything in Pro',
-      'Dedicated infra',
-      'Custom prompts',
-      'Private model fine-tuning',
-      'Analyst onboarding',
-    ],
-    cta: 'Contact Sales',
-    href: '#',
-  },
-];
+import { SUBSCRIPTION_PLANS, formatPrice, getYearlySavingsPercentage } from '@/lib/stripe';
+import CheckoutButton from '@/components/stripe/checkout-button';
+import { useAuth } from '@/lib/auth';
 
 export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false);
@@ -129,3 +91,4 @@ export default function PricingPage() {
     </div>
   );
 }
+
