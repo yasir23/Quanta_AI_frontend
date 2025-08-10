@@ -1,5 +1,7 @@
 'use client';
 
+// This page requires client-side rendering due to authentication hooks
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -339,6 +341,7 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
 
