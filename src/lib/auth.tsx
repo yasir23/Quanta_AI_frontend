@@ -108,6 +108,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signInWithEmail = async (email: string, password: string) => {
+    const supabase = getSupabase();
+    if (!supabase) {
+      throw new Error('Supabase client not available. Cannot sign in.');
+    }
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -211,6 +216,7 @@ export function useAuth() {
   }
   return context;
 }
+
 
 
 
