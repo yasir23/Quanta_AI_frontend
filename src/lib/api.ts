@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { supabase } from './supabase';
+import { getSupabase } from './supabase';
 
 // API Configuration
 const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://127.0.0.1:2024';
@@ -269,3 +269,4 @@ export const apiUtils = {
 };
 
 export default apiClient;
+
