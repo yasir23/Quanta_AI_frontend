@@ -172,6 +172,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    const supabase = getSupabase();
+    if (!supabase) {
+      console.warn('Supabase client not available. Cannot sign out.');
+      router.push('/');
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
@@ -226,6 +233,7 @@ export function useAuth() {
   }
   return context;
 }
+
 
 
 
