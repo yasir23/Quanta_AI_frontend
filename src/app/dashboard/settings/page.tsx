@@ -44,7 +44,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (user && profile) {
       setUserProfile({
-        id: profile.id || user.id,
+        id: user.id,
         email: user.email || '',
         name: profile.name || '',
         avatar_url: profile.avatar_url || '',
@@ -339,6 +339,7 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
 
