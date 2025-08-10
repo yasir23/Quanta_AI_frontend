@@ -87,8 +87,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/dashboard/settings',
-        destination: '/settings',
+        source: '/settings',
+        destination: '/dashboard/settings',
         permanent: false,
       },
     ];
@@ -133,5 +133,6 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
 
 
