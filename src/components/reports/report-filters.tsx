@@ -28,7 +28,7 @@ import {
 export interface ReportFilters {
   search: string;
   status: 'all' | 'completed' | 'failed' | 'in_progress' | 'pending';
-  dateRange: DateRange | undefined;
+  dateRange: { from: Date; to: Date } | undefined;
   bookmarkedOnly: boolean;
   sortBy: 'created_at' | 'completed_at' | 'query' | 'status';
   sortOrder: 'asc' | 'desc';
@@ -376,4 +376,5 @@ export default function ReportFilters({
     </Card>
   );
 }
+
 
