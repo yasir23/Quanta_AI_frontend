@@ -43,7 +43,16 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (user && profile) {
-      setUserProfile(profile as UserProfile);
+      setUserProfile({
+        id: profile.id || user.id,
+        email: user.email || '',
+        name: profile.name || '',
+        avatar_url: profile.avatar_url || '',
+        subscription_tier: (profile as any).subscription_tier || 'free',
+        subscription_status: (profile as any).subscription_status || 'inactive',
+        created_at: profile.created_at || new Date().toISOString(),
+        updated_at: profile.updated_at || new Date().toISOString(),
+      });
       setFormData({
         name: profile.name || '',
         email: user.email || '',
@@ -325,4 +334,5 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
