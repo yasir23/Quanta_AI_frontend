@@ -90,6 +90,9 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
         return; // Error toast is shown by checkCanMakeRequest
       }
 
+      // Show research started toast
+      toastVariants.research.started(data.query);
+
       const research = await ResearchClient.submitResearch(data.query, {
         research_type: data.research_type,
         max_results: data.max_results,
@@ -99,10 +102,15 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
       // Track the request for usage analytics
       await trackRequest();
 
+      // Show success toast
+      toastVariants.research.completed(data.query);
+
       onResearchSubmitted(research);
       form.reset();
     } catch (err: any) {
-      setError(err.message || 'Failed to submit research request');
+      const errorMessage = err.message || 'Failed to submit research request';
+      setError(errorMessage);
+      toastVariants.research.failed(data.query, errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -265,6 +273,7 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     </Card>
   );
 }
+
 
 
 
