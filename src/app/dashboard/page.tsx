@@ -97,7 +97,7 @@ export default function Dashboard() {
         pendingResearch: stats.pending || 0,
         monthlyRequests: usage.requestsUsed,
         tokensUsed: usage.tokensUsed,
-        recentReports: reports.reports || [],
+        recentReports: reportsResponse.research || [],
       });
 
     } catch (error) {
@@ -386,6 +386,7 @@ export default function Dashboard() {
     </div>
   );
 }
+
 
 
 
