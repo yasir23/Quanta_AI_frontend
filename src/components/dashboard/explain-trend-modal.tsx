@@ -72,24 +72,76 @@ export default function ExplainTrendModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
             <Sparkles className="h-6 w-6 text-primary" />
-            Explaining: {trendName}
+            Research Analysis: {trendName}
           </DialogTitle>
           <DialogDescription>
-            AI-generated analysis of the trend based on real-time data.
+            Deep research analysis powered by LangGraph multi-agent system.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
           {isLoading && (
-            <div className="flex items-center justify-center h-40">
+            <div className="flex flex-col items-center justify-center h-40 space-y-4">
               <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
+              <div className="text-center space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  {status === 'pending' && 'Initializing research...'}
+                  {status === 'in_progress' && 'Research agents are working...'}
+                </p>
+                {progress > 0 && (
+                  <div className="w-64 bg-secondary rounded-full h-2">
+                    <div 
+                      className="bg-primary h-2 rounded-full transition-all duration-300" 
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           )}
-          {error && <p className="text-destructive">{error}</p>}
+          {error && (
+            <div className="p-4 border border-destructive/20 bg-destructive/10 rounded-lg">
+              <p className="text-destructive font-medium">Research Failed</p>
+              <p className="text-sm text-destructive/80 mt-1">{error}</p>
+            </div>
+          )}
           {explanation && (
-            <div className="prose prose-sm dark:prose-invert max-w-none text-foreground">
-              {explanation.split('\n').map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+            <div className="space-y-4">
+              <div className="prose prose-sm dark:prose-invert max-w-none text-foreground">
+                {explanation.split('\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              </div>
+              
+              {sources && sources.length > 0 && (
+                <div className="border-t pt-4">
+                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                    <ExternalLink className="h-4 w-4" />
+                    Research Sources ({sources.length})
+                  </h4>
+                  <div className="space-y-2">
+                    {sources.map((source, index) => (
+                      <div key={index} className="p-3 border rounded-lg bg-muted/30">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <h5 className="font-medium text-sm truncate">{source.title}</h5>
+                            <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                              {source.snippet}
+                            </p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="shrink-0"
+                            onClick={() => window.open(source.url, '_blank')}
+                          >
+                            <ExternalLink className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -97,5 +149,6 @@ export default function ExplainTrendModal({
     </Dialog>
   );
 }
+
 
 
