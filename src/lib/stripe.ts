@@ -1,18 +1,35 @@
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 
-// Stripe configuration
-const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+// Stripe configuration with lazy initialization to prevent build-time errors
+const getStripePublishableKey = (): string => {
+  const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  if (!key) {
+    // During build time or when env var is missing, provide helpful error message
+    if (typeof window === 'undefined') {
+      // Server-side/build-time: log warning but don't throw to prevent build failures
+      console.warn('Warning: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable is not set. Stripe functionality will be disabled.');
+      return '';
+    } else {
+      // Client-side: throw error for runtime debugging
+      throw new Error('Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable. Please check your environment configuration.');
+    }
+  }
+  return key;
+};
 
-if (!STRIPE_PUBLISHABLE_KEY) {
-  throw new Error('Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable');
-}
+// Initialize Stripe with lazy loading
+let stripePromise: Promise<Stripe | null> | null = null;
 
-// Initialize Stripe
-let stripePromise: Promise<Stripe | null>;
-
-export const getStripe = () => {
+export const getStripe = (): Promise<Stripe | null> => {
+  const publishableKey = getStripePublishableKey();
+  
+  // If no key available, return null promise
+  if (!publishableKey) {
+    return Promise.resolve(null);
+  }
+  
   if (!stripePromise) {
-    stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+    stripePromise = loadStripe(publishableKey);
   }
   return stripePromise;
 };
@@ -183,3 +200,4 @@ export const getUsagePercentage = (used: number, limit: number): number => {
 };
 
 export default getStripe;
+
