@@ -17,9 +17,14 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
   async (config) => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.access_token) {
-        config.headers.Authorization = `Bearer ${session.access_token}`;
+      const supabase = getSupabase();
+      if (supabase) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.access_token) {
+          config.headers.Authorization = `Bearer ${session.access_token}`;
+        }
+      } else {
+        console.warn('Supabase client not available. API requests will be made without authentication.');
       }
     } catch (error) {
       console.error('Error getting session for API request:', error);
@@ -269,4 +274,5 @@ export const apiUtils = {
 };
 
 export default apiClient;
+
 
