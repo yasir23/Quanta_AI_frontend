@@ -102,11 +102,9 @@ function UserMenu() {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} asChild>
-                    <Link href="/" className="flex items-center gap-2">
-                        <LogOut className="h-4 w-4" />
-                        Logout
-                    </Link>
+                <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer">
+                    <LogOut className="h-4 w-4" />
+                    Logout
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -205,3 +203,4 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
