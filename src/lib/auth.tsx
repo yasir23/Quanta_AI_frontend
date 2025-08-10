@@ -151,6 +151,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signInWithGoogle = async () => {
+    const supabase = getSupabase();
+    if (!supabase) {
+      throw new Error('Supabase client not available. Cannot sign in with Google.');
+    }
+
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -221,6 +226,7 @@ export function useAuth() {
   }
   return context;
 }
+
 
 
 
