@@ -66,6 +66,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const fetchUserProfile = async (userId: string) => {
+    const supabase = getSupabase();
+    if (!supabase) {
+      console.warn('Supabase client not available. Cannot fetch user profile.');
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('user_profiles')
@@ -205,6 +211,7 @@ export function useAuth() {
   }
   return context;
 }
+
 
 
 
