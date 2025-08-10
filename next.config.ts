@@ -94,11 +94,8 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Experimental features
-  experimental: {
-    // Enable server components
-    serverComponentsExternalPackages: ['@supabase/supabase-js'],
-  },
+  // Server external packages
+  serverExternalPackages: ['@supabase/supabase-js'],
 
   // Webpack configuration for better bundle optimization
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
@@ -136,4 +133,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
 
