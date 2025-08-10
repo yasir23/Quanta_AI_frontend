@@ -17,8 +17,15 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function SignInPage() {
-  const { user, signInWithGoogle } = useAuth();
+  const { user, signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: '',
+  });
 
   useEffect(() => {
     if (user) {
@@ -26,13 +33,52 @@ export default function SignInPage() {
     }
   }, [user, router]);
 
-  const handleSignIn = async () => {
+  const handleGoogleSignIn = async () => {
     try {
+      setLoading(true);
+      setError(null);
       await signInWithGoogle();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to sign in with Google", error);
-      // You can also show an error message to the user
+      setError(error.message || "Failed to sign in with Google");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError(null);
+      await signInWithEmail(formData.email, formData.password);
+    } catch (error: any) {
+      console.error("Failed to sign in with email", error);
+      setError(error.message || "Failed to sign in");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEmailSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError(null);
+      await signUpWithEmail(formData.email, formData.password, formData.name);
+    } catch (error: any) {
+      console.error("Failed to sign up with email", error);
+      setError(error.message || "Failed to sign up");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
 
   return (
@@ -73,3 +119,4 @@ export default function SignInPage() {
     </div>
   );
 }
+
