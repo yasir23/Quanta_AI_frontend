@@ -27,6 +27,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    const supabase = getSupabase();
+    
+    // If Supabase is not available, set loading to false and return
+    if (!supabase) {
+      console.warn('Supabase client not available. Authentication will be disabled.');
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -196,5 +205,6 @@ export function useAuth() {
   }
   return context;
 }
+
 
 
