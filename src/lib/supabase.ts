@@ -1,13 +1,49 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Supabase configuration with lazy initialization to prevent build-time errors
+const getSupabaseConfig = (): { url: string; anonKey: string } | null => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  if (!url || !anonKey) {
+    // During build time or when env vars are missing, provide helpful error message
+    if (typeof window === 'undefined') {
+      // Server-side/build-time: log warning but don't throw to prevent build failures
+      console.warn('Warning: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables are not set. Supabase functionality will be disabled.');
+      return null;
+    } else {
+      // Client-side: throw error for runtime debugging
+      throw new Error('Missing Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY). Please check your environment configuration.');
+    }
+  }
+  
+  return { url, anonKey };
+};
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
+// Create Supabase client with lazy initialization
+let supabaseClient: SupabaseClient | null = null;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const createSupabaseClient = (): SupabaseClient | null => {
+  const config = getSupabaseConfig();
+  
+  if (!config) {
+    return null;
+  }
+  
+  if (!supabaseClient) {
+    supabaseClient = createClient(config.url, config.anonKey);
+  }
+  
+  return supabaseClient;
+};
+
+// Export a getter function instead of direct client to handle missing env vars gracefully
+export const getSupabase = (): SupabaseClient | null => {
+  return createSupabaseClient();
+};
+
+// For backward compatibility, export supabase but with null fallback
+export const supabase = createSupabaseClient();
 
 // Types for our database schema
 export interface UserProfile {
@@ -48,3 +84,4 @@ export interface UsageRecord {
   timestamp: string;
   metadata?: Record<string, any>;
 }
+
