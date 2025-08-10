@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase, UserProfile } from './supabase';
+import { getSupabase, UserProfile } from './supabase';
 import { User, Session } from '@supabase/supabase-js';
 
 interface AuthContextType {
@@ -196,4 +196,5 @@ export function useAuth() {
   }
   return context;
 }
+
 
