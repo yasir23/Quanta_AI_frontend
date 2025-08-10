@@ -256,11 +256,12 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
               type="submit"
               className="w-full"
               disabled={isSubmitting || isLoading}
+              aria-describedby={error ? "error-message" : undefined}
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  Submitting Research Request...
+                  <LoadingSpinner size="sm" />
+                  <span className="ml-2">Submitting Research Request...</span>
                 </>
               ) : (
                 <>
@@ -275,6 +276,7 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     </Card>
   );
 }
+
 
 
 
