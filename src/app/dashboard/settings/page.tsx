@@ -70,7 +70,12 @@ export default function SettingsPage() {
         name: formData.name,
       });
       
-      setUserProfile(updatedProfile as UserProfile);
+      const newProfile = {
+        ...userProfile!,
+        name: formData.name,
+        updated_at: new Date().toISOString(),
+      };
+      setUserProfile(newProfile);
       updateProfile?.(updatedProfile);
       
       toast({
@@ -334,5 +339,6 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
