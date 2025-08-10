@@ -256,10 +256,38 @@ export default function ReportFilters({
             {/* Date Range */}
             <div className="space-y-2">
               <Label>Date Range</Label>
-              <DatePickerWithRange
-                date={filters.dateRange}
-                onDateChange={(dateRange) => updateFilter('dateRange', dateRange)}
-              />
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label htmlFor="fromDate" className="text-xs">From</Label>
+                  <Input
+                    id="fromDate"
+                    type="date"
+                    value={filters.dateRange?.from ? filters.dateRange.from.toISOString().split('T')[0] : ''}
+                    onChange={(e) => {
+                      const fromDate = e.target.value ? new Date(e.target.value) : undefined;
+                      updateFilter('dateRange', fromDate ? { 
+                        from: fromDate, 
+                        to: filters.dateRange?.to || fromDate 
+                      } : undefined);
+                    }}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="toDate" className="text-xs">To</Label>
+                  <Input
+                    id="toDate"
+                    type="date"
+                    value={filters.dateRange?.to ? filters.dateRange.to.toISOString().split('T')[0] : ''}
+                    onChange={(e) => {
+                      const toDate = e.target.value ? new Date(e.target.value) : undefined;
+                      updateFilter('dateRange', toDate ? { 
+                        from: filters.dateRange?.from || toDate, 
+                        to: toDate 
+                      } : undefined);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Source Count Range */}
@@ -376,5 +404,6 @@ export default function ReportFilters({
     </Card>
   );
 }
+
 
 
