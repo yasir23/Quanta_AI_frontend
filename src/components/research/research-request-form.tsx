@@ -81,11 +81,20 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     setError(null);
 
     try {
+      // Check usage limits before submitting research
+      const canMakeRequest = await checkCanMakeRequest();
+      if (!canMakeRequest) {
+        return; // Error toast is shown by checkCanMakeRequest
+      }
+
       const research = await ResearchClient.submitResearch(data.query, {
         research_type: data.research_type,
         max_results: data.max_results,
         include_sources: data.include_sources,
       });
+
+      // Track the request for usage analytics
+      await trackRequest();
 
       onResearchSubmitted(research);
       form.reset();
@@ -253,4 +262,5 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     </Card>
   );
 }
+
 
