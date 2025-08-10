@@ -86,9 +86,9 @@ export default function Dashboard() {
       
       // Mock research statistics for now
       const stats = {
-        total: reportsResponse.research?.length || 0,
-        completed: reportsResponse.research?.filter((r: any) => r.status === 'completed').length || 0,
-        pending: reportsResponse.research?.filter((r: any) => r.status === 'in_progress').length || 0,
+        total: reportsResponse.length || 0,
+        completed: reportsResponse.filter((r: any) => r.status === 'completed').length || 0,
+        pending: reportsResponse.filter((r: any) => r.status === 'in_progress').length || 0,
       };
       
       setDashboardStats({
@@ -97,7 +97,7 @@ export default function Dashboard() {
         pendingResearch: stats.pending || 0,
         monthlyRequests: usage.requestsUsed,
         tokensUsed: usage.tokensUsed,
-        recentReports: reportsResponse.research || [],
+        recentReports: reportsResponse || [],
       });
 
     } catch (error) {
@@ -386,6 +386,7 @@ export default function Dashboard() {
     </div>
   );
 }
+
 
 
 
