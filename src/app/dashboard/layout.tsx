@@ -38,7 +38,7 @@ import { DollarSignIcon } from '@/components/dollar-sign-icon';
 
 
 function UserMenu() {
-    const { user, signOut } = useAuth();
+    const { user, profile, signOut } = useAuth();
 
     if (!user) {
         return (
@@ -63,6 +63,9 @@ function UserMenu() {
         )
     }
 
+    const displayName = profile?.name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
+    const avatarUrl = profile?.avatar_url || user.user_metadata?.avatar_url;
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -72,8 +75,8 @@ function UserMenu() {
                     className="overflow-hidden rounded-full"
                 >
                     <Avatar>
-                        <AvatarImage src={user.photoURL || ''} alt={user.displayName || ''} />
-                        <AvatarFallback>{user.displayName?.charAt(0) || 'Q'}</AvatarFallback>
+                        <AvatarImage src={avatarUrl || ''} alt={displayName} />
+                        <AvatarFallback>{displayName.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
