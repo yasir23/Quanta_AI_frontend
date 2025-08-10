@@ -66,7 +66,7 @@ export default function SettingsPage() {
 
     setIsSaving(true);
     try {
-      const updatedProfile = await authAPI.updateProfile({
+      await authAPI.updateProfile({
         name: formData.name,
       });
       
@@ -76,7 +76,7 @@ export default function SettingsPage() {
         updated_at: new Date().toISOString(),
       };
       setUserProfile(newProfile);
-      updateProfile?.(updatedProfile);
+      updateProfile?.({ ...profile!, name: formData.name });
       
       toast({
         title: "Profile Updated",
@@ -339,6 +339,7 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
 
