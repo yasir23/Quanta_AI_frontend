@@ -82,10 +82,14 @@ export default function Dashboard() {
       setUsageStats(usage);
 
       // Load recent reports
-      const reports = await researchAPI.getReports({ limit: 5 });
+      const reportsResponse = await researchAPI.getResearchHistory(5);
       
-      // Load research statistics
-      const stats = await researchAPI.getResearchStats();
+      // Mock research statistics for now
+      const stats = {
+        total: reportsResponse.research?.length || 0,
+        completed: reportsResponse.research?.filter((r: any) => r.status === 'completed').length || 0,
+        pending: reportsResponse.research?.filter((r: any) => r.status === 'in_progress').length || 0,
+      };
       
       setDashboardStats({
         totalResearch: stats.total || 0,
@@ -382,5 +386,6 @@ export default function Dashboard() {
     </div>
   );
 }
+
 
 
