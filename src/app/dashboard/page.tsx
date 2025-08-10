@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -7,11 +7,26 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import OverviewChart from '@/components/dashboard/overview-chart';
-import TrendCard from '@/components/dashboard/trend-card';
-import SentimentMap from '@/components/dashboard/sentiment-map';
-import { trends } from '@/lib/constants';
-import ExplainTrendModal from '@/components/dashboard/explain-trend-modal';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Activity, 
+  FileText, 
+  Search, 
+  TrendingUp, 
+  Users, 
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  Zap,
+  BarChart3
+} from 'lucide-react';
+import { useAuth } from '@/lib/auth';
+import { researchAPI } from '@/lib/api';
+import { getUsageStats } from '@/lib/usage-tracking';
+import { toast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,3 +80,4 @@ export default function Dashboard() {
     </>
   );
 }
+
