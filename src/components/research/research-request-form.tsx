@@ -243,10 +243,12 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
 
             {/* Error Display */}
             {error && (
-              <div className="p-4 border border-destructive/20 bg-destructive/10 rounded-lg">
-                <p className="text-destructive font-medium">Research Request Failed</p>
-                <p className="text-sm text-destructive/80 mt-1">{error}</p>
-              </div>
+              <ErrorDisplay 
+                error={error} 
+                title="Research Request Failed"
+                onRetry={() => setError(null)}
+                className="border border-destructive/20 bg-destructive/10 rounded-lg p-4"
+              />
             )}
 
             {/* Submit Button */}
@@ -273,6 +275,7 @@ export default function ResearchRequestForm({ onResearchSubmitted, isLoading = f
     </Card>
   );
 }
+
 
 
 
