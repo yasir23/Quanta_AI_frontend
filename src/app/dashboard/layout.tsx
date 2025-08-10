@@ -32,6 +32,7 @@ import {
   User,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import NotificationCenter from '@/components/dashboard/notification-center';
 import { sidebarLinks, userMenuLinks } from '@/lib/constants';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import { DollarSignIcon } from '@/components/dollar-sign-icon';
@@ -203,4 +204,5 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
 
