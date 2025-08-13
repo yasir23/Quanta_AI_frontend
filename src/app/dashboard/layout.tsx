@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -115,6 +117,88 @@ function UserMenu() {
 }
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  // Authentication guard - redirect to sign-in if not authenticated
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/sign-in');
+    }
+  }, [user, loading, router]);
+
+  // Show loading skeleton while checking authentication
+  if (loading) {
+    return (
+      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        {/* Sidebar skeleton */}
+        <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-background sm:flex">
+          <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+            <div className="h-9 w-full rounded-full bg-muted animate-pulse"></div>
+          </nav>
+          <div className="p-2">
+            <div className="h-10 w-full rounded-md bg-muted animate-pulse mb-4"></div>
+          </div>
+          <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-lg px-3 py-2">
+                <div className="h-4 w-4 rounded bg-muted animate-pulse"></div>
+                <div className="h-4 w-20 rounded bg-muted animate-pulse"></div>
+              </div>
+            ))}
+          </nav>
+        </aside>
+        
+        {/* Main content skeleton */}
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
+          {/* Header skeleton */}
+          <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+            <div className="ml-auto flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div>
+              <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div>
+            </div>
+          </header>
+          
+          {/* Main content skeleton */}
+          <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="rounded-lg border bg-card p-6">
+                  <div className="h-4 w-16 rounded bg-muted animate-pulse mb-2"></div>
+                  <div className="h-8 w-24 rounded bg-muted animate-pulse mb-1"></div>
+                  <div className="h-3 w-32 rounded bg-muted animate-pulse"></div>
+                </div>
+              ))}
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-lg border bg-card p-6">
+                <div className="h-6 w-32 rounded bg-muted animate-pulse mb-4"></div>
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-4 w-full rounded bg-muted animate-pulse"></div>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-lg border bg-card p-6">
+                <div className="h-6 w-28 rounded bg-muted animate-pulse mb-4"></div>
+                <div className="space-y-3">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-4 w-full rounded bg-muted animate-pulse"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render dashboard content if user is not authenticated
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-background sm:flex">
@@ -207,6 +291,9 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
+
+
 
 
 
