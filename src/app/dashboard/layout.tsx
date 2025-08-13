@@ -117,6 +117,33 @@ function UserMenu() {
 }
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  // Authentication guard - redirect to sign-in if not authenticated
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/sign-in');
+    }
+  }, [user, loading, router]);
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-muted/40">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render dashboard content if user is not authenticated
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-background sm:flex">
@@ -209,6 +236,7 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
 
 
 
