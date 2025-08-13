@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   Avatar,
@@ -205,6 +207,7 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
 
 
 
