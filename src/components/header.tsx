@@ -1,13 +1,37 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
+import { useAuth } from '@/lib/auth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
+import { User, Settings, LogOut } from 'lucide-react';
 
 export function Header() {
-  const navLinks = [
+  const { user, profile, loading, signOut } = useAuth();
+
+  // Base navigation links (always visible)
+  const baseNavLinks = [
     { href: '#features', label: 'Features' },
     { href: '/pricing', label: 'Pricing' },
-    { href: '/dashboard', label: 'Dashboard' },
   ];
+
+  // Add dashboard link only for authenticated users
+  const navLinks = user 
+    ? [...baseNavLinks, { href: '/dashboard', label: 'Dashboard' }]
+    : baseNavLinks;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -45,3 +69,4 @@ export function Header() {
     </header>
   );
 }
+
