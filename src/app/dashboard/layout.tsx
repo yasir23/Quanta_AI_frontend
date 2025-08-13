@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -207,6 +209,7 @@ export default function DashboardLayout({
         </AuthProvider>
     )
 }
+
 
 
 
