@@ -25,10 +25,12 @@ export default function RootLayout({
           {children}
         </AuthProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
 }
+
 
 
 
